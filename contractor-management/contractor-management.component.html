@@ -1,0 +1,100 @@
+<div class="contractor-management">
+  <header class="page-header">
+    <h1>Contractor Management</h1>
+    <button class="back-btn" routerLink="/admin">Back to Dashboard</button>
+  </header>
+
+  <div class="content">
+    <div class="contractors-table" *ngIf="!isEditing">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Specialization</th>
+            <th>Rating</th>
+            <th>Projects</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let contractor of contractors">
+            <td>{{ contractor.name }}</td>
+            <td>{{ contractor.email }}</td>
+            <td>{{ contractor.phone }}</td>
+            <td>
+              <div class="specialization-tags">
+                <span *ngFor="let spec of contractor.specialization" class="tag">
+                  {{ getSpecializationLabel(spec) }}
+                </span>
+              </div>
+            </td>
+            <td>{{ contractor.rating }}/5</td>
+            <td>{{ contractor.projectsCompleted }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="contractor.status">
+                {{ contractor.status }}
+              </span>
+            </td>
+            <td>{{ contractor.createdAt | date }}</td>
+            <td class="actions">
+              <button class="edit-btn" (click)="editContractor(contractor)">Edit</button>
+              <button class="delete-btn" (click)="deleteContractor(contractor.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="edit-form" *ngIf="isEditing">
+      <h2>Edit Contractor</h2>
+      <form [formGroup]="editForm" (ngSubmit)="saveContractor()">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" formControlName="name">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" formControlName="email">
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" formControlName="phone">
+        </div>
+
+        <div class="form-group">
+          <label>Specialization</label>
+          <div class="checkbox-group">
+            <div *ngFor="let spec of specializations" class="checkbox-item">
+              <input
+                type="checkbox"
+                [id]="spec"
+                [value]="spec"
+                [formControlName]="'specialization'"
+              >
+              <label [for]="spec">{{ getSpecializationLabel(spec) }}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" formControlName="status">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="editForm.invalid">Save</button>
+          <button type="button" (click)="cancelEdit()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 

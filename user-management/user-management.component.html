@@ -1,0 +1,77 @@
+<div class="user-management">
+  <header class="page-header">
+    <h1>User Management</h1>
+    <button class="back-btn" routerLink="/admin">Back to Dashboard</button>
+  </header>
+
+  <div class="content">
+    <div class="users-table" *ngIf="!isEditing">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="user.status">
+                {{ user.status }}
+              </span>
+            </td>
+            <td>{{ user.createdAt | date }}</td>
+            <td class="actions">
+              <button class="edit-btn" (click)="editUser(user)">Edit</button>
+              <button class="delete-btn" (click)="deleteUser(user.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="edit-form" *ngIf="isEditing">
+      <h2>Edit User</h2>
+      <form [formGroup]="editForm" (ngSubmit)="saveUser()">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" formControlName="name">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" formControlName="email">
+        </div>
+
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select id="role" formControlName="role">
+            <option value="homeowner">Homeowner</option>
+            <option value="contractor">Contractor</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" formControlName="status">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="editForm.invalid">Save</button>
+          <button type="button" (click)="cancelEdit()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 
