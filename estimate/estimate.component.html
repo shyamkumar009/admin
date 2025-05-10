@@ -1,0 +1,104 @@
+<div class="estimate-container">
+  <div class="estimate-header">
+    <h1>Project Cost Estimator</h1>
+    <p>Get an instant estimate for your construction or renovation project</p>
+  </div>
+
+  <div class="estimate-content">
+    <div class="estimate-form">
+      <form [formGroup]="estimateForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="projectType">Project Type</label>
+          <select id="projectType" formControlName="projectType" class="form-control">
+            <option value="">Select Project Type</option>
+            <option *ngFor="let type of projectTypes" [value]="type.value">
+              {{ type.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="squareFootage">Square Footage</label>
+          <input 
+            type="number" 
+            id="squareFootage" 
+            formControlName="squareFootage" 
+            class="form-control"
+            placeholder="Enter square footage"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="rooms">Number of Rooms</label>
+          <input 
+            type="number" 
+            id="rooms" 
+            formControlName="rooms" 
+            class="form-control"
+            placeholder="Enter number of rooms"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="complexity">Project Complexity</label>
+          <select id="complexity" formControlName="complexity" class="form-control">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="timeline">Expected Timeline (months)</label>
+          <input 
+            type="number" 
+            id="timeline" 
+            formControlName="timeline" 
+            class="form-control"
+            placeholder="Enter timeline in months"
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!estimateForm.valid">
+          Get Estimate
+        </button>
+      </form>
+    </div>
+
+    <div class="estimate-visualization">
+      <div class="estimate-summary">
+        <h2>Estimated Cost Breakdown</h2>
+        <div class="cost-details">
+          <div class="cost-item">
+            <span class="label">Materials:</span>
+            <span class="value">${{ estimateDetails.materials | number:'1.0-0' }}</span>
+          </div>
+          <div class="cost-item">
+            <span class="label">Labor:</span>
+            <span class="value">${{ estimateDetails.labor | number:'1.0-0' }}</span>
+          </div>
+          <div class="cost-item">
+            <span class="label">Equipment:</span>
+            <span class="value">${{ estimateDetails.equipment | number:'1.0-0' }}</span>
+          </div>
+          <div class="cost-item">
+            <span class="label">Permits:</span>
+            <span class="value">${{ estimateDetails.permits | number:'1.0-0' }}</span>
+          </div>
+          <div class="cost-item total">
+            <span class="label">Total Estimated Cost:</span>
+            <span class="value">${{ estimateDetails.total | number:'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="estimateChart"></canvas>
+      </div>
+
+      <div class="estimate-disclaimer">
+        <p>* This is an estimated cost based on the information provided. Final costs may vary based on specific requirements and market conditions.</p>
+      </div>
+    </div>
+  </div>
+</div> 
